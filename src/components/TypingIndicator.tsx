@@ -13,7 +13,7 @@ export const TypingIndicator: React.FC = () => {
         <Sparkles size={18} className="text-white animate-pulse" />
       </div>
       
-      <div className="bg-white/5 border border-white/10 px-6 py-4 rounded-[1.5rem] rounded-tl-none shadow-[0_4px_20px_-4px_rgba(0,0,0,0.15)] flex items-center gap-1.5">
+      <div className="bg-white border border-slate-100/80 px-6 py-4 rounded-[1.5rem] rounded-tl-none shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] flex items-center gap-1.5">
         {[0, 1, 2].map((i) => (
           <motion.div
             key={i}
@@ -26,7 +26,7 @@ export const TypingIndicator: React.FC = () => {
               delay: i * 0.15,
               ease: "easeInOut",
             }}
-            className="w-1.5 h-1.5 bg-[#ed811e]/60 rounded-full"
+            className="w-1.5 h-1.5 bg-[#003B71]/40 rounded-full"
           />
         ))}
       </div>
