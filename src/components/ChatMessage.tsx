@@ -32,11 +32,11 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
         className={cn(
           "max-w-[85%] px-5 py-4 text-[13px] leading-relaxed transition-all break-words overflow-hidden relative group font-medium",
           isBot 
-            ? "bg-white/5 text-slate-200 border border-white/10 rounded-[1.5rem] rounded-tl-none shadow-[0_4px_20px_-4px_rgba(0,0,0,0.15)]" 
+            ? "bg-white text-slate-700 border border-slate-100 rounded-[1.5rem] rounded-tl-none shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)]" 
             : "bg-gradient-to-tr from-[#003B71] to-[#0a5494] text-white rounded-[1.5rem] rounded-tr-none shadow-[0_8px_20px_-6px_rgba(0,39,113,0.35)] border border-white/5"
         )}
       >
-        <div className={cn("prose prose-sm max-w-none [word-break:break-word] overflow-wrap-anywhere font-medium", isBot ? "text-slate-300 prose-invert" : "text-white prose-invert")}>
+        <div className={cn("prose prose-sm max-w-none [word-break:break-word] overflow-wrap-anywhere font-medium", isBot ? "text-slate-600" : "text-white prose-invert")}>
           <Markdown 
             remarkPlugins={[remarkGfm]}
             components={{
@@ -47,7 +47,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
                   rel="noopener noreferrer" 
                   className={cn(
                     "underline underline-offset-4 font-bold transition-colors",
-                    isBot ? "text-orange-400 hover:text-orange-300" : "text-orange-300 hover:text-orange-200"
+                    isBot ? "text-[#003B71] hover:text-[#ed811e]" : "text-orange-300 hover:text-orange-200"
                   )} 
                 />
               )
@@ -58,7 +58,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
         </div>
         <div className={cn(
           "text-[8px] mt-2.5 font-bold flex items-center gap-1.5 uppercase tracking-widest",
-          isBot ? "text-slate-500" : "text-white/60"
+          isBot ? "text-slate-350" : "text-white/60"
         )}>
           {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
         </div>
