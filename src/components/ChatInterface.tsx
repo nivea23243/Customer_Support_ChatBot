@@ -38,6 +38,23 @@ export const ChatInterface: React.FC = () => {
     scrollToBottom();
   }, [messages, isLoading]);
 
+  const handleReset = () => {
+    setMessages([
+      {
+        id: 'greeting',
+        role: 'model',
+        content: "Hello! 👋 Welcome to our support. We are here to help you. How can I assist you today?",
+        timestamp: Date.now(),
+      }
+    ]);
+  };
+
+  const handleSuggestionClick = async (queryText: string) => {
+    if (isLoading) return;
+    setInput('');
+    await handleSendMessage(queryText);
+  };
+
   const handleSendMessage = async (textToSend: string) => {
     if (!textToSend.trim() || isLoading) return;
 
@@ -75,28 +92,12 @@ export const ChatInterface: React.FC = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim() || isLoading) return;
-    handleSendMessage(input);
+    const text = input;
     setInput('');
-  };
-
-  const handleSuggestionClick = (queryText: string) => {
-    handleSendMessage(queryText);
-  };
-
-  const handleReset = () => {
-    if (window.confirm("Clear this conversation and start fresh?")) {
-      setMessages([
-        {
-          id: 'greeting',
-          role: 'model',
-          content: "Hello! 👋 Welcome to our support. We are here to help you. How can I assist you today?",
-          timestamp: Date.now(),
-        }
-      ]);
-    }
+    await handleSendMessage(text);
   };
 
   return (
@@ -108,10 +109,10 @@ export const ChatInterface: React.FC = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 30, scale: 0.95 }}
             transition={{ type: "spring", damping: 25, stiffness: 220 }}
-            className="w-full h-[65vh] max-h-[480px] sm:h-[580px] sm:max-h-[calc(100vh-140px)] bg-gradient-to-b from-[#0b0f19] via-[#0e1629] to-[#040814] rounded-[2.5rem] shadow-[0_30px_70px_-15px_rgba(0,0,0,0.85)] flex flex-col overflow-hidden mb-4 pointer-events-auto border border-white/10"
+            className="w-full h-[65vh] max-h-[480px] sm:h-[580px] sm:max-h-[calc(100vh-140px)] bg-[#fdfdfd] rounded-[2rem] shadow-[0_20px_60px_-10px_rgba(0,39,113,0.22)] flex flex-col overflow-hidden mb-4 pointer-events-auto border border-slate-100"
           >
             {/* Elegant Brand Header */}
-            <div className="bg-white/5 backdrop-blur-xl px-6 py-5 flex items-center justify-between text-white border-b border-white/5 relative overflow-hidden shrink-0">
+            <div className="bg-gradient-to-r from-[#003B71] to-[#0a5494] px-6 py-5 flex items-center justify-between text-white shadow-md relative overflow-hidden shrink-0">
               {/* Subtle background decorative shapes */}
               <div className="absolute right-0 top-0 w-32 h-32 bg-white/5 rounded-full blur-xl pointer-events-none"></div>
               
@@ -120,13 +121,13 @@ export const ChatInterface: React.FC = () => {
                   <div className="w-11 h-11 bg-gradient-to-tr from-[#ed811e] to-[#f59e0b] rounded-2xl flex items-center justify-center text-white font-bold text-lg shadow-md shadow-orange-500/25">
                     <Sparkles size={18} className="animate-pulse" />
                   </div>
-                  <div className="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-emerald-500 border-2 border-[#090f1c] rounded-full z-10 animate-pulse"></div>
+                  <div className="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-emerald-500 border-2 border-[#003B71] rounded-full z-10 animate-pulse"></div>
                 </div>
                 <div className="flex flex-col">
                   <h3 className="text-sm font-extrabold tracking-tight">Cadila Concierge</h3>
                   <div className="flex items-center gap-1.5 mt-0.5">
                     <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full"></span>
-                    <p className="text-[9px] text-blue-300 font-bold uppercase tracking-wider">Active & Ready</p>
+                    <p className="text-[9px] text-blue-200/90 font-bold uppercase tracking-wider">Active & Ready</p>
                   </div>
                 </div>
               </div>
@@ -136,14 +137,14 @@ export const ChatInterface: React.FC = () => {
                   <button 
                     onClick={handleReset}
                     title="Reset Conversation"
-                    className="text-slate-400 hover:text-white transition-colors p-2 hover:bg-white/5 rounded-xl"
+                    className="text-blue-100 hover:text-white transition-colors p-2 hover:bg-white/10 rounded-xl"
                   >
                     <RotateCcw size={16} />
                   </button>
                 )}
                 <button 
                   onClick={() => setIsOpen(false)}
-                  className="text-slate-400 hover:text-white transition-colors p-2 hover:bg-white/5 rounded-xl"
+                  className="text-blue-100 hover:text-white transition-colors p-2 hover:bg-white/10 rounded-xl"
                 >
                   <X size={18} />
                 </button>
@@ -151,7 +152,7 @@ export const ChatInterface: React.FC = () => {
             </div>
 
             {/* Messages Area */}
-            <div className="flex-1 overflow-y-auto px-5 pt-6 pb-14 space-y-6 scrollbar-hide bg-[#060a13]/40 relative z-0">
+            <div className="flex-1 overflow-y-auto px-5 pt-6 pb-14 space-y-6 scrollbar-hide bg-[#FAFBFF] relative z-0">
               {messages.map((message) => (
                 <ChatMessage key={message.id} message={message} />
               ))}
@@ -160,14 +161,14 @@ export const ChatInterface: React.FC = () => {
             </div>
 
             {/* Suggestion Chips - Clean 2x2 Grid Structure */}
-            <div className="px-5 py-3.5 bg-[#090f1d] border-t border-white/5 grid grid-cols-2 gap-2 shrink-0 relative z-10">
+            <div className="px-5 py-3.5 bg-[#FAFBFF] border-t border-slate-100 grid grid-cols-2 gap-2 shrink-0 relative z-10">
               {SUGGESTIONS.map((s, idx) => (
                 <button
                   key={idx}
                   type="button"
                   disabled={isLoading}
                   onClick={() => handleSuggestionClick(s.query)}
-                  className="text-[10px] font-bold text-slate-300 bg-white/5 hover:bg-[#ed811e] hover:text-white hover:border-[#ed811e] px-2.5 py-2.5 rounded-xl border border-white/5 transition-all shadow-sm active:scale-95 duration-200 disabled:opacity-50 disabled:pointer-events-none text-center truncate"
+                  className="text-[10px] font-bold text-[#003B71] bg-white hover:bg-[#003B71] hover:text-white hover:border-[#003B71] px-2.5 py-2.5 rounded-xl border border-slate-200 transition-all shadow-sm active:scale-95 duration-200 disabled:opacity-50 disabled:pointer-events-none text-center truncate"
                   title={s.label}
                 >
                   {s.label}
@@ -176,17 +177,17 @@ export const ChatInterface: React.FC = () => {
             </div>
 
             {/* Premium Input Form */}
-            <div className="p-4 bg-[#050a14] border-t border-white/5 shrink-0 relative z-10">
+            <div className="p-4 bg-white border-t border-slate-100 shrink-0 relative z-10">
               <form 
                 onSubmit={handleSubmit}
-                className="w-full flex items-center gap-2 bg-white/5 border border-white/10 rounded-[1.25rem] p-1.5 pl-4 focus-within:ring-4 focus-within:ring-orange-500/10 focus-within:border-[#ed811e]/30 transition-all duration-300"
+                className="w-full flex items-center gap-2 bg-slate-50 border border-slate-200/80 rounded-[1.25rem] p-1.5 pl-4 focus-within:ring-4 focus-within:ring-[#003B71]/5 focus-within:border-[#003B71]/20 transition-all duration-300"
               >
                 <input
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   placeholder="Ask me anything..."
-                  className="flex-1 bg-transparent text-xs outline-none text-slate-200 placeholder-slate-500 font-medium py-2"
+                  className="flex-1 bg-transparent text-xs outline-none text-slate-700 placeholder-slate-400 font-medium py-2"
                 />
                 <button
                   type="submit"
@@ -195,14 +196,14 @@ export const ChatInterface: React.FC = () => {
                     "w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-300",
                     input.trim() && !isLoading 
                       ? "bg-gradient-to-tr from-[#ed811e] to-[#f97316] text-white shadow-md shadow-orange-500/20 hover:scale-105 active:scale-95 cursor-pointer" 
-                      : "bg-white/5 text-slate-500 cursor-not-allowed border border-white/5"
+                      : "bg-slate-200 text-slate-400 cursor-not-allowed"
                   )}
                 >
                   {isLoading ? <Loader2 size={16} className="animate-spin" /> : <Send size={16} />}
                 </button>
               </form>
               <div className="mt-3 text-center">
-                <p className="text-[8px] text-slate-600 font-black uppercase tracking-[0.25em]">The Care Continues...</p>
+                <p className="text-[8px] text-slate-300 font-black uppercase tracking-[0.25em]">The Care Continues...</p>
               </div>
             </div>
           </motion.div>
@@ -228,4 +229,3 @@ export const ChatInterface: React.FC = () => {
     </div>
   );
 };
-
